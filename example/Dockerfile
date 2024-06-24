@@ -8,4 +8,5 @@ RUN apt-get update --yes \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/wsuzume/devel-entrypoint.git \
-    && /bin/bash devel-entrypoint/install.sh
+    && cd devel-entrypoint \
+    && /bin/bash install.sh
