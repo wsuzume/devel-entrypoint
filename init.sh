@@ -49,10 +49,7 @@ if [ "$(id -u)" == 0 ]; then
     # - INIT_GID: a group id we want our user to belong to (default "100")
     # - INIT_GROUP: a group name we want for the group (default the same with INIT_USER)
     # - GRANT_SUDO: a boolean ("1" or "yes") to grant the user sudo rights
-    # - CHOWN_HOME: a boolean ("1" or "yes") to chown the user's home folder
-    # - CHOWN_EXTRA: a comma-separated list of paths to chown
-    # - CHOWN_HOME_OPTS / CHOWN_EXTRA_OPTS: arguments to the chown commands
-
+    
     # Group configuration
     if [[ -z "${INIT_GROUP}" && -n "${INIT_GID}" ]]; then
         # Only INIT_GID is specified
