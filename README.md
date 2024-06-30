@@ -33,7 +33,7 @@ RUN apt-get update --yes \
 Refer to the `example` folder for an installation example.
 
 # Usage
-Specify the following environment variables when starting the Docker container.
+To enable the functionality, the user running the container must be root. Then, specify the following environment variables when starting the Docker container.
 
 | Environment Variable | Function | Default Value |
 | :---: | :---: | :---: |
@@ -42,3 +42,9 @@ Specify the following environment variables when starting the Docker container.
 | `INIT_GROUP` | Group name | (Same as `INIT_USER` if a non-existent GID is specified) |
 | `INIT_GID` | Group ID | `100` |
 | `GRANT_SUDO` | Grant sudo privileges (added if "yes" or "1") | - |
+
+For example, if you want to start with the same user ID and group ID as the host, try running the following command:
+
+```
+docker container run -it --rm -e INIT_UID=`id -u` -e INIT_GID=`id -g` your_image init.sh
+```
