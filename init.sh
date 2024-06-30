@@ -109,9 +109,8 @@ if [ "$(id -u)" == 0 ]; then
     else
         # Search INIT_USER by INIT_UID
         existing_uname=$(getent passwd | awk -F: -v uid="${INIT_UID}" '$3 == uid {print $1}')
-        if [ -n "{$existing_uname}" ]; then
+        if [ -n "${existing_uname}" ]; then
             if [ "${existing_uname}" != "${INIT_USER}" ]; then
-                _log ""
                 _log "ERROR: When searching by INIT_UID, the user '${existing_uname} (${INIT_UID})' already exists, but the specified INIT_USER '${INIT_USER}' does not match."
                 exit 1
             else
