@@ -48,3 +48,14 @@ For example, if you want to start with the same user ID and group ID as the host
 ```
 docker container run -it --rm -e INIT_UID=`id -u` -e INIT_GID=`id -g` your_image init.sh
 ```
+
+If you have any commands you want to run, append them after `init.sh`. For example, if you run the following command, you should get an output like this:
+
+```
+$ docker container run -it --rm -e INIT_UID=`id -u` -e INIT_GID=`id -g` your_image init.sh id
+Entered init.sh with args: id
+Create specified group: 'morgan' (5000)
+Create specified user: 'morgan' (5000)
+Running as morgan: id
+uid=5000(morgan) gid=5000(morgan) groups=5000(morgan),100(users)
+```
