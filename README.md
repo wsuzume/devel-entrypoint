@@ -33,10 +33,6 @@ RUN apt-get update --yes \
 Refer to the `example` folder for an installation example.
 
 # Usage
-以下のように翻訳できます：
-
----
-
 Specify the following environment variables when starting the Docker container.
 
 | Environment Variable | Function | Default Value |
