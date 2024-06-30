@@ -165,5 +165,8 @@ if [ "$(id -u)" == 0 ]; then
         #   for resolving paths of any subprocesses spawned by `${cmd[@]}`.
 
 else
-    echo "PEEEEEEE"
+    _log "To enable the settings in init.sh, you need to run it as the root user, for example, with '-u root'."
+    _log "Running as $(id)"
+    _log "Executing the command:" "${cmd[@]}"
+    exec "${cmd[@]}"
 fi
