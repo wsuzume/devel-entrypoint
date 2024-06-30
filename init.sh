@@ -127,12 +127,12 @@ if [ "$(id -u)" == 0 ]; then
 
     # Optionally grant passwordless sudo rights for the desired user
     if [[ "${GRANT_SUDO}" == "1" || "${GRANT_SUDO}" == "yes" ]]; then
-        _log "Granting ${USER} passwordless sudo rights!"
-        echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/added-by-start-script
+        _log "Granting ${INIT_USER} passwordless sudo rights!"
+        echo "${INIT_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/added-by-start-script
     fi
 
-    _log "Running as ${USER}:" "${cmd[@]}"
-    exec sudo --preserve-env --set-home --user "${USER}" \
+    _log "Running as ${INIT_USER}:" "${cmd[@]}"
+    exec sudo --preserve-env --set-home --user "${INIT_USER}" \
         LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" \
         PATH="${PATH}" \
         "${cmd[@]}"
