@@ -10,3 +10,5 @@ RUN apt-get update --yes \
 RUN git clone https://github.com/wsuzume/devel-entrypoint.git \
     && cd devel-entrypoint \
     && /bin/bash install.sh
+
+ENTRYPOINT ["/bin/bash"]
