@@ -100,7 +100,7 @@ if [ "$(id -u)" == 0 ]; then
         # Search UID by USER
         existing_uid=$(id -u "${USER}")
         if [ "${existing_uid}" != "${UID}" ]; then
-            _log "ERROR: When searching by USER, the user '${USER} (${UID})' already exists, but the specified UID '${UID}' does not match."
+            _log "ERROR: When searching by USER, the user '${USER} (${existing_uid})' already exists, but the specified UID '${UID}' does not match."
             exit 1
         else
             # Both informations are correct
@@ -111,7 +111,7 @@ if [ "$(id -u)" == 0 ]; then
         existing_uname=$(getent passwd | awk -F: -v uid="${UID}" '$3 == uid {print $1}')
         if [ -n "{$existing_uname}" ]; then
             if [ "${existing_uname}" != "${USER}" ]; then
-                _log "ERROR: When searching by UID, the user '${USER} (${UID})' already exists, but the specified USER '${USER}' does not match."
+                _log "ERROR: When searching by UID, the user '${existing_uname} (${UID})' already exists, but the specified USER '${USER}' does not match."
                 exit 1
             else
                 # Both informations are correct
