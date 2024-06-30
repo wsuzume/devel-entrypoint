@@ -37,7 +37,7 @@ Specify the following environment variables when starting the Docker container.
 
 | Environment Variable | Function | Default Value |
 | :---: | :---: | :---: |
-| `INIT_USER` | Username | `morgan` |
+| `INIT_USER` | User name | `morgan` |
 | `INIT_UID` | User ID | `1000` |
 | `INIT_GROUP` | Group name | (Same as `INIT_USER` if a non-existent GID is specified) |
 | `INIT_GID` | Group ID | `100` |
