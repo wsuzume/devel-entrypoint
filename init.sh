@@ -178,6 +178,7 @@ if [ "$(id -u)" == 0 ]; then
             #   above in /etc/sudoers.d/path. Thus PATH is irrelevant to how the above
             #   sudo command resolves the path of `${cmd[@]}`. The PATH will be relevant
             #   for resolving paths of any subprocesses spawned by `${cmd[@]}`.
+    fi
 else
     _log "To enable the settings in init.sh, you need to run it as the root user, for example, with '-u root'."
     _log "Running as $(id)"
