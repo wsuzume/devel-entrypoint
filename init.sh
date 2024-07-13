@@ -40,6 +40,8 @@ fi
 if [[ -d "/usr/local/bin/first-hook.d" ]]; then
     # NOTE: This hook will run as the user the container was started with!
     source /usr/local/bin/run-hooks.sh /usr/local/bin/first-hook.d
+else
+    echo "skipping first hooks: /usr/local/bin/first-hook.d does not exists."
 fi
 
 # If the container started as the root user, then we have permission to refit
@@ -136,6 +138,8 @@ if [ "$(id -u)" == 0 ]; then
     if [[ -d "/usr/local/bin/second-hook.d" ]]; then
         # NOTE: This hook is run as the root user!
         source /usr/local/bin/run-hooks.sh /usr/local/bin/second-hook.d
+    else
+        echo "skipping second hooks: /usr/local/bin/second-hook.d does not exists."
     fi
 
     _log "Running as ${INIT_USER}:" "${cmd[@]}"
