@@ -142,39 +142,42 @@ if [ "$(id -u)" == 0 ]; then
         echo "skipping second hooks: /usr/local/bin/second-hook.d does not exists."
     fi
 
-    _log "Running as ${INIT_USER}:" "${cmd[@]}"
-    exec sudo --preserve-env --set-home --user "${INIT_USER}" \
-        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" \
-        PATH="${PATH}" \
-        "${cmd[@]}"
-        # Notes on how we ensure that the environment that this container is started
-        # with is preserved (except vars listed in JUPYTER_ENV_VARS_TO_UNSET) when
-        # we transition from running as root to running as USER.
-        #
-        # - We use `sudo` to execute the command as USER. What then
-        #   happens to the environment will be determined by configuration in
-        #   /etc/sudoers and /etc/sudoers.d/* as well as flags we pass to the sudo
-        #   command. The behavior can be inspected with `sudo -V` run as root.
-        #
-        #   ref: `man sudo`    https://linux.die.net/man/8/sudo
-        #   ref: `man sudoers` https://www.sudo.ws/docs/man/sudoers.man/
-        #
-        # - We use the `--preserve-env` flag to pass through most environment
-        #   variables, but understand that exceptions are caused by the sudoers
-        #   configuration: `env_delete` and `env_check`.
-        #
-        # - We use the `--set-home` flag to set the HOME variable appropriately.
-        #
-        # - To reduce the default list of variables deleted by sudo, we could have
-        #   used `env_delete` from /etc/sudoers. It has a higher priority than the
-        #   `--preserve-env` flag and the `env_keep` configuration.
-        #
-        # - We preserve LD_LIBRARY_PATH, PATH and PYTHONPATH explicitly. Note however that sudo
-        #   resolves `${cmd[@]}` using the "secure_path" variable we modified
-        #   above in /etc/sudoers.d/path. Thus PATH is irrelevant to how the above
-        #   sudo command resolves the path of `${cmd[@]}`. The PATH will be relevant
-        #   for resolving paths of any subprocesses spawned by `${cmd[@]}`.
-
+    if [[ "${PRESERVE_ROOT}" == "1" || "${PRESERVE_ROOT}" == "yes" ]]; then
+        _log "Running as root:" "${cmd[@]}"
+        exec "${cmd[@]}"
+    else
+        _log "Running as ${INIT_USER}:" "${cmd[@]}"
+        exec sudo --preserve-env --set-home --user "${INIT_USER}" \
+            LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" \
+            PATH="${PATH}" \
+            "${cmd[@]}"
+            # Notes on how we ensure that the environment that this container is started
+            # with is preserved (except vars listed in JUPYTER_ENV_VARS_TO_UNSET) when
+            # we transition from running as root to running as USER.
+            #
+            # - We use `sudo` to execute the command as USER. What then
+            #   happens to the environment will be determined by configuration in
+            #   /etc/sudoers and /etc/sudoers.d/* as well as flags we pass to the sudo
+            #   command. The behavior can be inspected with `sudo -V` run as root.
+            #
+            #   ref: `man sudo`    https://linux.die.net/man/8/sudo
+            #   ref: `man sudoers` https://www.sudo.ws/docs/man/sudoers.man/
+            #
+            # - We use the `--preserve-env` flag to pass through most environment
+            #   variables, but understand that exceptions are caused by the sudoers
+            #   configuration: `env_delete` and `env_check`.
+            #
+            # - We use the `--set-home` flag to set the HOME variable appropriately.
+            #
+            # - To reduce the default list of variables deleted by sudo, we could have
+            #   used `env_delete` from /etc/sudoers. It has a higher priority than the
+            #   `--preserve-env` flag and the `env_keep` configuration.
+            #
+            # - We preserve LD_LIBRARY_PATH, PATH and PYTHONPATH explicitly. Note however that sudo
+            #   resolves `${cmd[@]}` using the "secure_path" variable we modified
+            #   above in /etc/sudoers.d/path. Thus PATH is irrelevant to how the above
+            #   sudo command resolves the path of `${cmd[@]}`. The PATH will be relevant
+            #   for resolving paths of any subprocesses spawned by `${cmd[@]}`.
 else
     _log "To enable the settings in init.sh, you need to run it as the root user, for example, with '-u root'."
     _log "Running as $(id)"
