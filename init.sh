@@ -37,7 +37,7 @@ if [ -z "${INIT_GID}" ]; then
     INIT_GID="100"
 fi
 
-if [[ ! -d "/usr/local/bin/first-hook.d" ]]; then
+if [[ -d "/usr/local/bin/first-hook.d" ]]; then
     # NOTE: This hook will run as the user the container was started with!
     source /usr/local/bin/run-hooks.sh /usr/local/bin/first-hook.d
 fi
@@ -133,7 +133,7 @@ if [ "$(id -u)" == 0 ]; then
         echo "${INIT_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/added-by-start-script
     fi
 
-    if [[ ! -d "/usr/local/bin/second-hook.d" ]]; then
+    if [[ -d "/usr/local/bin/second-hook.d" ]]; then
         # NOTE: This hook is run as the root user!
         source /usr/local/bin/run-hooks.sh /usr/local/bin/second-hook.d
     fi
