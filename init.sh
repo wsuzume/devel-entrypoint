@@ -37,6 +37,9 @@ if [ -z "${INIT_GID}" ]; then
     INIT_GID="100"
 fi
 
+# NOTE: This hook will run as the user the container was started with!
+source /usr/local/bin/run-hooks.sh /usr/local/bin/first-hook.d
+
 # If the container started as the root user, then we have permission to refit
 # the morgan user, and ensure file permissions, grant sudo rights, and such
 # things before we run the command passed to start.sh as the desired user
@@ -127,6 +130,9 @@ if [ "$(id -u)" == 0 ]; then
         _log "Granting ${INIT_USER} passwordless sudo rights!"
         echo "${INIT_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/added-by-start-script
     fi
+
+    # NOTE: This hook is run as the root user!
+    source /usr/local/bin/run-hooks.sh /usr/local/bin/second-hook.d
 
     _log "Running as ${INIT_USER}:" "${cmd[@]}"
     exec sudo --preserve-env --set-home --user "${INIT_USER}" \
